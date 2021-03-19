@@ -181,7 +181,7 @@
       <th>method</th>
       <td><p>A character string indicating which correlation coefficient is
 to be used for the test. One of <code>"pearson"</code> (default),
-<code>"kendall"</code>, <code>"spearman"</code>, <code>"biserial"</code>,
+<code>"kendall"</code>, <code>"spearman"</code> (but see also the <code>robust</code> argument), <code>"biserial"</code>,
 <code>"polychoric"</code>, <code>"tetrachoric"</code>, <code>"biweight"</code>,
 <code>"distance"</code>, <code>"percentage"</code> (for percentage bend correlation),
 <code>"blomqvist"</code> (for Blomqvist's coefficient), <code>"hoeffding"</code> (for
@@ -266,17 +266,20 @@ simple regression model.</p></td>
     <tr>
       <th>robust</th>
       <td><p>If <code>TRUE</code>, will rank-transform the variables prior to
-estimating the correlation. Note that, for instance, a Pearson's
+estimating the correlation, which is one way of making the analysis more
+resistant to extreme values (outliers). Note that, for instance, a Pearson's
 correlation on rank-transformed data is equivalent to a Spearman's rank
 correlation. Thus, using <code>robust=TRUE</code> and <code>method="spearman"</code> is
-redundant. Nonetheless, it is an easy way to increase the robustness of the
-correlation (as well as obtaining Bayesian Spearman rank Correlations).</p></td>
+redundant. Nonetheless, it is an easy option to increase the robustness of the
+correlation as well as flexible way to obtain Bayesian or multilevel
+Spearman-like rank correlations.</p></td>
     </tr>
     <tr>
       <th>winsorize</th>
-      <td><p>Either <code>FALSE</code> or a number between 0 and 1 (e.g.,
-<code>0.2</code>) that corresponds to the threshold of desired
-<code><a href='winsorize.html'>winsorization</a></code>.</p></td>
+      <td><p>Another way of making the correlation more "robust" (i.e.,
+limiting the impact of extreme values). Can be either <code>FALSE</code> or a
+number between 0 and 1 (e.g., <code>0.2</code>) that corresponds to the desired
+threshold. See the <code><a href='winsorize.html'>winsorize()</a></code> function for more details.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -293,13 +296,13 @@ other methods. See <code><a href='https://rdrr.io/r/stats/cor.test.html'>stats::
 
     <p>A correlation object that can be displayed using the <code>print</code>,
   <code>summary</code> or <code>table</code> methods.</p>
-<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Multiple tests correction</h3>
+<h3 class='hasAnchor' id='multiple-tests-correction'><a class='anchor' href='#multiple-tests-correction'></a>Multiple tests correction</h3>
 <p>About multiple tests corrections.</p>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     
-<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Correlation Types</h3>
+<h3 class='hasAnchor' id='correlation-types'><a class='anchor' href='#correlation-types'></a>Correlation Types</h3>
 
 <ul>
 <li><p><strong>Pearson's correlation</strong>: This is the most common correlation
@@ -377,7 +380,7 @@ variables.</p></li>
 correlation applicable when both observed variables are dichotomous.</p></li>
 </ul>
 
-<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Partial Correlation</h3>
+<h3 class='hasAnchor' id='partial-correlation'><a class='anchor' href='#partial-correlation'></a>Partial Correlation</h3>
 <p><strong>Partial correlations</strong> are estimated as the correlation between two
 variables after adjusting for the (linear) effect of one or more other
 variable. The correlation test is then run after having partialized the
@@ -404,9 +407,13 @@ in <code>correlation()</code> but <code>partial</code> is set to <code>FALSE</co
 default), then a back-transformation from partial to non-partial correlation
 will be attempted (through <code><a href='cor_to_pcor.html'>pcor_to_cor</a></code>). However,
 this is not possible when using <code><a href='cor_test.html'>cor_test()</a></code> so that if you set
-<code>multilevel=TRUE</code> in it, the resulting correlations are partial one.</p>
+<code>multilevel=TRUE</code> in it, the resulting correlations are partial one.
+Note that for Bayesian multilevel correlations, if <code>partial = FALSE</code>,
+the back transformation will also recompute p-values based on the new r scores,
+and will drop the Bayes factors (as they are not relevant anymore). To keep
+Bayesian scores, don't forget to set <code>partial = TRUE</code>.</p>
 
-<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Notes</h3>
+<h3 class='hasAnchor' id='notes'><a class='anchor' href='#notes'></a>Notes</h3>
 
 <ul>
 <li><p>Kendall and Spearman correlations when <code>bayesian=TRUE</code>: These
@@ -445,7 +452,7 @@ this is not possible when using <code><a href='cor_test.html'>cor_test()</a></co
 <span class='va'>results</span> <span class='op'>&lt;-</span> <span class='fu'>correlation</span><span class='op'>(</span><span class='va'>iris</span><span class='op'>)</span>
 
 <span class='va'>results</span>
-</div><div class='output co'>#&gt; <span style='color: #0000BB;'># Correlation table (pearson-method)</span><span>
+</div><div class='output co'>#&gt; <span style='color: #0000BB;'># Correlation Matrix (pearson-method)</span><span>
 #&gt; 
 #&gt; Parameter1   |   Parameter2 |     r |         95% CI | t(148) |         p
 #&gt; -------------------------------------------------------------------------
@@ -490,7 +497,7 @@ this is not possible when using <code><a href='cor_test.html'>cor_test()</a></co
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='output co'>#&gt; </span><span style='color: #0000BB;'># Correlation table (pearson-method)</span><span>
+#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='output co'>#&gt; </span><span style='color: #0000BB;'># Correlation Matrix (pearson-method)</span><span>
 #&gt; 
 #&gt; Group      |   Parameter1 |   Parameter2 |    r |        95% CI | t(48) |         p
 #&gt; -----------------------------------------------------------------------------------
@@ -506,18 +513,18 @@ this is not possible when using <code><a href='cor_test.html'>cor_test()</a></co
 #&gt; versicolor |  Sepal.Width | Petal.Length | 0.56 | [ 0.33, 0.73] |  4.69 | &lt; .001***
 #&gt; versicolor |  Sepal.Width |  Petal.Width | 0.66 | [ 0.47, 0.80] |  6.15 | &lt; .001***
 #&gt; versicolor | Petal.Length |  Petal.Width | 0.79 | [ 0.65, 0.87] |  8.83 | &lt; .001***
-#&gt; virginica  | Sepal.Length |  Sepal.Width | 0.46 | [ 0.20, 0.65] |  3.56 | 0.003**  
+#&gt; virginica  | Sepal.Length |  Sepal.Width | 0.46 | [ 0.20, 0.65] |  3.56 | &lt; .01**  
 #&gt; virginica  | Sepal.Length | Petal.Length | 0.86 | [ 0.77, 0.92] | 11.90 | &lt; .001***
-#&gt; virginica  | Sepal.Length |  Petal.Width | 0.28 | [ 0.00, 0.52] |  2.03 | 0.048*   
-#&gt; virginica  |  Sepal.Width | Petal.Length | 0.40 | [ 0.14, 0.61] |  3.03 | 0.012*   
+#&gt; virginica  | Sepal.Length |  Petal.Width | 0.28 | [ 0.00, 0.52] |  2.03 | &lt; .05*   
+#&gt; virginica  |  Sepal.Width | Petal.Length | 0.40 | [ 0.14, 0.61] |  3.03 | &lt; .05*   
 #&gt; virginica  |  Sepal.Width |  Petal.Width | 0.54 | [ 0.31, 0.71] |  4.42 | &lt; .001***
-#&gt; virginica  | Petal.Length |  Petal.Width | 0.32 | [ 0.05, 0.55] |  2.36 | 0.045*   
+#&gt; virginica  | Petal.Length |  Petal.Width | 0.32 | [ 0.05, 0.55] |  2.36 | &lt; .05*   
 #&gt; 
 #&gt; p-value adjustment method: Holm (1979)
 #&gt; Observations: 50</div><div class='input'>
 <span class='co'># automatic selection of correlation method</span>
 <span class='fu'>correlation</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>2</span><span class='op'>]</span>, method <span class='op'>=</span> <span class='st'>"auto"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'># Correlation table (auto-method)</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'># Correlation Matrix (auto-method)</span><span>
 #&gt; 
 #&gt; Parameter1 | Parameter2 |     r |         95% CI | t(30) |         p
 #&gt; --------------------------------------------------------------------
@@ -527,19 +534,19 @@ this is not possible when using <code><a href='cor_test.html'>cor_test()</a></co
 #&gt; mpg        |         wt | -0.87 | [-0.93, -0.74] | -9.56 | &lt; .001***
 #&gt; mpg        |       qsec |  0.42 | [ 0.08,  0.67] |  2.53 | 0.222    
 #&gt; mpg        |         vs |  0.66 | [ 0.41,  0.82] |  4.86 | &lt; .001***
-#&gt; mpg        |         am |  0.60 | [ 0.32,  0.78] |  4.11 | 0.007**  
+#&gt; mpg        |         am |  0.60 | [ 0.32,  0.78] |  4.11 | &lt; .01**  
 #&gt; mpg        |       gear |  0.48 | [ 0.16,  0.71] |  3.00 | 0.097    
-#&gt; mpg        |       carb | -0.55 | [-0.75, -0.25] | -3.62 | 0.021*   
+#&gt; mpg        |       carb | -0.55 | [-0.75, -0.25] | -3.62 | &lt; .05*   
 #&gt; disp       |         hp |  0.79 | [ 0.61,  0.89] |  7.08 | &lt; .001***
 #&gt; disp       |       drat | -0.71 | [-0.85, -0.48] | -5.53 | &lt; .001***
 #&gt; disp       |         wt |  0.89 | [ 0.78,  0.94] | 10.58 | &lt; .001***
 #&gt; disp       |       qsec | -0.43 | [-0.68, -0.10] | -2.64 | 0.197    
 #&gt; disp       |         vs | -0.71 | [-0.85, -0.48] | -5.53 | &lt; .001***
-#&gt; disp       |         am | -0.59 | [-0.78, -0.31] | -4.02 | 0.009**  
-#&gt; disp       |       gear | -0.56 | [-0.76, -0.26] | -3.66 | 0.020*   
+#&gt; disp       |         am | -0.59 | [-0.78, -0.31] | -4.02 | &lt; .01**  
+#&gt; disp       |       gear | -0.56 | [-0.76, -0.26] | -3.66 | &lt; .05*   
 #&gt; disp       |       carb |  0.39 | [ 0.05,  0.65] |  2.35 | 0.303    
 #&gt; hp         |       drat | -0.45 | [-0.69, -0.12] | -2.75 | 0.170    
-#&gt; hp         |         wt |  0.66 | [ 0.40,  0.82] |  4.80 | 0.001**  
+#&gt; hp         |         wt |  0.66 | [ 0.40,  0.82] |  4.80 | &lt; .01**  
 #&gt; hp         |       qsec | -0.71 | [-0.85, -0.48] | -5.49 | &lt; .001***
 #&gt; hp         |         vs | -0.72 | [-0.86, -0.50] | -5.73 | &lt; .001***
 #&gt; hp         |         am | -0.24 | [-0.55,  0.12] | -1.37 | &gt; .999   
@@ -552,17 +559,17 @@ this is not possible when using <code><a href='cor_test.html'>cor_test()</a></co
 #&gt; drat       |       gear |  0.70 | [ 0.46,  0.84] |  5.36 | &lt; .001***
 #&gt; drat       |       carb | -0.09 | [-0.43,  0.27] | -0.50 | &gt; .999   
 #&gt; wt         |       qsec | -0.17 | [-0.49,  0.19] | -0.97 | &gt; .999   
-#&gt; wt         |         vs | -0.55 | [-0.76, -0.26] | -3.65 | 0.020*   
+#&gt; wt         |         vs | -0.55 | [-0.76, -0.26] | -3.65 | &lt; .05*   
 #&gt; wt         |         am | -0.69 | [-0.84, -0.45] | -5.26 | &lt; .001***
-#&gt; wt         |       gear | -0.58 | [-0.77, -0.29] | -3.93 | 0.011*   
+#&gt; wt         |       gear | -0.58 | [-0.77, -0.29] | -3.93 | &lt; .05*   
 #&gt; wt         |       carb |  0.43 | [ 0.09,  0.68] |  2.59 | 0.205    
 #&gt; qsec       |         vs |  0.74 | [ 0.53,  0.87] |  6.11 | &lt; .001***
 #&gt; qsec       |         am | -0.23 | [-0.54,  0.13] | -1.29 | &gt; .999   
 #&gt; qsec       |       gear | -0.21 | [-0.52,  0.15] | -1.19 | &gt; .999   
-#&gt; qsec       |       carb | -0.66 | [-0.82, -0.40] | -4.76 | 0.001**  
+#&gt; qsec       |       carb | -0.66 | [-0.82, -0.40] | -4.76 | &lt; .01**  
 #&gt; vs         |         am |  0.26 | [-0.09,  0.56] |  1.50 | &gt; .999   
 #&gt; vs         |       gear |  0.21 | [-0.15,  0.52] |  1.15 | &gt; .999   
-#&gt; vs         |       carb | -0.57 | [-0.77, -0.28] | -3.80 | 0.015*   
+#&gt; vs         |       carb | -0.57 | [-0.77, -0.28] | -3.80 | &lt; .05*   
 #&gt; am         |       gear |  0.79 | [ 0.62,  0.89] |  7.16 | &lt; .001***
 #&gt; am         |       carb |  0.06 | [-0.30,  0.40] |  0.32 | &gt; .999   
 #&gt; gear       |       carb |  0.27 | [-0.08,  0.57] |  1.56 | &gt; .999   
@@ -580,11 +587,11 @@ this is not possible when using <code><a href='cor_test.html'>cor_test()</a></co
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://dominiquemakowski.github.io/'>Dominique Makowski</a>, <a href='https://github.com/strengejacke'>Daniel Lüdecke</a>, <a href='https://github.com/mattansb'>Mattan S. Ben-Shachar</a>, <a href='https://sites.google.com/site/indrajeetspatilmorality/'>Indrajeet Patil</a>.</p>
+  <p><p>Developed by <a href="https://dominiquemakowski.github.io/" class="external-link">Dominique Makowski</a>, <a href="https://github.com/strengejacke" class="external-link">Daniel Lüdecke</a>, <a href="https://github.com/mattansb" class="external-link">Mattan S. Ben-Shachar</a>, <a href="https://sites.google.com/site/indrajeetspatilmorality/" class="external-link">Indrajeet Patil</a>.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>

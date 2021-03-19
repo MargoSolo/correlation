@@ -138,7 +138,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Export tables into different output formats</h1>
-    <small class="dont-index">Source: <a href='https://github.com/easystats/correlation/blob/master/R/display.R'><code>R/display.R</code></a>, <a href='https://github.com/easystats/correlation/blob/master/R/print_md.R'><code>R/print_md.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/easystats/correlation/blob/master/R/display.R'><code>R/display.R</code></a>, <a href='https://github.com/easystats/correlation/blob/master/R/methods_print.R'><code>R/methods_print.R</code></a></small>
     <div class="hidden name"><code>display.easycormatrix.Rd</code></div>
     </div>
 
@@ -148,10 +148,41 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for easycormatrix</span>
-<span class='fu'><a href='https://easystats.github.io/insight/reference/display.html'>display</a></span><span class='op'>(</span><span class='va'>object</span>, format <span class='op'>=</span> <span class='st'>"markdown"</span>, digits <span class='op'>=</span> <span class='fl'>2</span>, stars <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'><a href='https://easystats.github.io/insight/reference/display.html'>display</a></span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  format <span class='op'>=</span> <span class='st'>"markdown"</span>,
+  digits <span class='op'>=</span> <span class='fl'>2</span>,
+  p_digits <span class='op'>=</span> <span class='fl'>3</span>,
+  stars <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  include_significance <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
+
+<span class='co'># S3 method for easycorrelation</span>
+<span class='fu'><a href='https://easystats.github.io/insight/reference/display.html'>print_md</a></span><span class='op'>(</span><span class='va'>x</span>, digits <span class='op'>=</span> <span class='cn'>NULL</span>, p_digits <span class='op'>=</span> <span class='cn'>NULL</span>, stars <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for easycorrelation</span>
+<span class='fu'><a href='https://easystats.github.io/insight/reference/display.html'>print_html</a></span><span class='op'>(</span><span class='va'>x</span>, digits <span class='op'>=</span> <span class='cn'>NULL</span>, p_digits <span class='op'>=</span> <span class='cn'>NULL</span>, stars <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for easycormatrix</span>
-<span class='fu'><a href='https://easystats.github.io/insight/reference/display.html'>print_md</a></span><span class='op'>(</span><span class='va'>x</span>, digits <span class='op'>=</span> <span class='fl'>2</span>, stars <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'><a href='https://easystats.github.io/insight/reference/display.html'>print_md</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  digits <span class='op'>=</span> <span class='cn'>NULL</span>,
+  p_digits <span class='op'>=</span> <span class='cn'>NULL</span>,
+  stars <span class='op'>=</span> <span class='cn'>NULL</span>,
+  include_significance <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
+
+<span class='co'># S3 method for easycormatrix</span>
+<span class='fu'><a href='https://easystats.github.io/insight/reference/display.html'>print_html</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  digits <span class='op'>=</span> <span class='cn'>NULL</span>,
+  p_digits <span class='op'>=</span> <span class='cn'>NULL</span>,
+  stars <span class='op'>=</span> <span class='cn'>NULL</span>,
+  include_significance <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,11 +198,15 @@ or its summary.</p></td>
 <code>"markdown"</code> is supported.</p></td>
     </tr>
     <tr>
-      <th>digits</th>
+      <th>digits, p_digits</th>
       <td><p>To do...</p></td>
     </tr>
     <tr>
       <th>stars</th>
+      <td><p>To do...</p></td>
+    </tr>
+    <tr>
+      <th>include_significance</th>
       <td><p>To do...</p></td>
     </tr>
     <tr>
@@ -232,11 +267,11 @@ or its summary.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://dominiquemakowski.github.io/'>Dominique Makowski</a>, <a href='https://github.com/strengejacke'>Daniel Lüdecke</a>, <a href='https://github.com/mattansb'>Mattan S. Ben-Shachar</a>, <a href='https://sites.google.com/site/indrajeetspatilmorality/'>Indrajeet Patil</a>.</p>
+  <p><p>Developed by <a href="https://dominiquemakowski.github.io/" class="external-link">Dominique Makowski</a>, <a href="https://github.com/strengejacke" class="external-link">Daniel Lüdecke</a>, <a href="https://github.com/mattansb" class="external-link">Mattan S. Ben-Shachar</a>, <a href="https://sites.google.com/site/indrajeetspatilmorality/" class="external-link">Indrajeet Patil</a>.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>

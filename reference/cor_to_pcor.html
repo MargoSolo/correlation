@@ -206,19 +206,19 @@ in the response variable.</p>
 
 <span class='co'># Partialize</span>
 <span class='fu'>cor_to_pcor</span><span class='op'>(</span><span class='va'>cor</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
+</div><div class='co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
 #&gt; Sepal.Length    1.0000000   0.6285707    0.7190656  -0.3396174
 #&gt; Sepal.Width     0.6285707   1.0000000   -0.6152919   0.3526260
 #&gt; Petal.Length    0.7190656  -0.6152919    1.0000000   0.8707698
 #&gt; Petal.Width    -0.3396174   0.3526260    0.8707698   1.0000000</div><div class='input'><span class='fu'>cor_to_spcor</span><span class='op'>(</span><span class='va'>cor</span>, cov <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>, <span class='va'>sd</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
+</div><div class='co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
 #&gt; Sepal.Length   1.00000000  0.30389212    0.3890689  -0.1357714
 #&gt; Sepal.Width    0.55758743  1.00000000   -0.5385056   0.2599849
 #&gt; Petal.Length   0.18506103 -0.13959991    1.0000000   0.3167424
 #&gt; Petal.Width   -0.09001634  0.09394365    0.4415000   1.0000000</div><div class='input'>
 <span class='co'># Inverse</span>
 <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'>pcor_to_cor</span><span class='op'>(</span><span class='fu'>cor_to_pcor</span><span class='op'>(</span><span class='va'>cor</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>-</span> <span class='va'>cor</span>, <span class='fl'>2</span><span class='op'>)</span> <span class='co'># Should be 0</span>
-</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
+</div><div class='co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
 #&gt; Sepal.Length            0           0            0           0
 #&gt; Sepal.Width             0           0            0           0
 #&gt; Petal.Length            0           0            0           0
